@@ -13,4 +13,5 @@ export const ERROR_MESSAGES = {
   NOT_ALLOWED: "You're not allowed to perform this action",
   CATEGORY_NOT_EXIST: 'Category not found',
   PRODUCT_NOT_FOUND: 'Product not found',
+  CART_ITEM_NOT_FOUND: 'Cart item not found',
 };

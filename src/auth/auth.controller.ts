@@ -32,7 +32,6 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() body: RegisterDto) {
-    console.log("body ---> ", body)
     return this.authService.register(body);
   }
 

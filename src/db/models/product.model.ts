@@ -1,6 +1,7 @@
 import { Model } from 'objection';
 import { type UserModel } from 'src/db/models/user.model';
 import { ProductCategoryModel } from './product-category.model';
+import { CartItemModel } from './cart-item.model';
 
 export class ProductModel extends Model {
   static tableName = 'products';
@@ -13,21 +14,32 @@ export class ProductModel extends Model {
   price: number;
   stock: number;
   currency: string;
-  image_key: string;
+  imageKey: string;
   categoryId: number;
   category: ProductCategoryModel
+  cartItems: CartItemModel[];
   createdAt: Date;
   updatedAt: Date;
 
   static relationMappings() {
     const { ProductCategoryModel } = require('./product-category.model');
+    const { CartItemModel } = require('./cart-item.model');
+
     return {
-        category: {
+      category: {
         relation: Model.BelongsToOneRelation,
         modelClass: ProductCategoryModel,
         join: {
           from: `${ProductModel.tableName}.category_id`,
           to: `${ProductCategoryModel.tableName}.${ProductCategoryModel.idColumn}`,
+        },
+      },
+      cartItems: {
+        relation: Model.HasManyRelation,
+        modelClass: CartItemModel,
+        join: {
+          from: `${ProductModel.tableName}.id`,
+          to: `${CartItemModel.tableName}.product_id`,
         },
       },
     };

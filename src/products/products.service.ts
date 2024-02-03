@@ -1,8 +1,9 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { ProductModel } from 'src/db/models/product.model';
-import { GetProductsDto } from './products.dto';
+import { CreateProductDto, GetProductsDto, UpdateProductDto } from './products.dto';
 import { ProductCategoryModel } from 'src/db/models/product-category.model';
 import { ERROR_MESSAGES } from 'src/constants/error.messages';
+import { SUCCESS_MESSAGES } from 'src/constants/success.messages';
 
 @Injectable()
 export class ProductsService {
@@ -14,8 +15,17 @@ export class ProductsService {
     private readonly categoryModel: typeof ProductCategoryModel
   ){}
 
-  create(createProductDto: any) {
-    return 'This action adds a new product';
+  async create(body: CreateProductDto) {
+    const { categoryId, currency, description, imageKey, name, price, stock, sku } = body
+
+    const findCategory = await this.categoryModel.query().findById(categoryId);
+
+    if(!findCategory) {
+      throw new HttpException(ERROR_MESSAGES.CATEGORY_NOT_EXIST, 404)
+    }
+    await this.productModel.query().insert({name, price, sku, description, currency,stock, imageKey, categoryId})
+
+    return {message: SUCCESS_MESSAGES.PRODUCT_CREATED_SUCCESS}
   }
 
   async findAll(query: GetProductsDto) {
@@ -43,8 +53,7 @@ export class ProductsService {
     return await productQueryBuilder;
   }
 
-  async findOne(id: number) {
-
+  async findProduct(id: number) {
     const singleProduct = await this.productModel.query().findById(id)
 
     if(!singleProduct){
@@ -54,18 +63,35 @@ export class ProductsService {
     return singleProduct;
   }
 
-  update(id: number, updateProductDto: any) {
-    return `This action updates a #${id} product`;
+  async update(id: number, body: UpdateProductDto) {
+    const { categoryId, currency, description, imageKey, name, price, stock, sku } = body
+
+    const findProduct = await this.findProduct(id)
+    if(!findProduct) {
+      throw new HttpException(ERROR_MESSAGES.PRODUCT_NOT_FOUND,404)
+    }
+
+    if(categoryId) {
+      const findCategory = await this.categoryModel.query().findById(categoryId);
+      if(!findCategory) {
+        throw new HttpException(ERROR_MESSAGES.CATEGORY_NOT_EXIST, 404)
+      }
+    }
+    
+    await this.productModel.query().update({name, price, sku, description, currency,stock, imageKey, categoryId}).where('id', id)
+
+    return {message: SUCCESS_MESSAGES.PRODUCT_UPDATE_SUCCESS}
   }
 
   async remove(id: number) {
-    const singleProduct = await this.productModel.query().findById(id)
+    const singleProduct = await this.findProduct(id)
 
     if(!singleProduct){
       throw new HttpException(ERROR_MESSAGES.PRODUCT_NOT_FOUND,404)
     }
 
+    await this.productModel.query().deleteById(id)
+
     return singleProduct;
-    return `This action removes a #${id} product`;
   }
 }

@@ -58,7 +58,7 @@ export async function up(knex: Knex): Promise<void> {
 
         await trx.schema.createTable('cart_items',table => {
             table.increments('id').primary().notNullable()
-            table.string('quntity').notNullable()
+            table.integer('quantity').notNullable()
             table.integer('user_id').notNullable();
             table.foreign('user_id').references('users.id');
             table.integer('product_id').notNullable();

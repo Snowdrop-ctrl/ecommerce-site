@@ -9,7 +9,7 @@ export class CreateProductDto {
     @IsString()
     sku?: string
 
-    @IsOptional()
+    @IsNotEmpty()
     @IsString()
     description: string
 
@@ -21,6 +21,40 @@ export class CreateProductDto {
     @IsNumber()
     stock: number
 
+    @IsNotEmpty()
+    @IsString()
+    imageKey: string
+
+    @IsNotEmpty()
+    @IsString()
+    currency: string
+
+    @IsNotEmpty()
+    @IsNumber()
+    categoryId: number
+}
+
+export class UpdateProductDto {
+    @IsOptional()
+    @IsString()
+    name: string
+
+    @IsOptional()
+    @IsString()
+    sku?: string
+
+    @IsOptional()
+    @IsString()
+    description: string
+
+    @IsOptional()
+    @IsNumber()
+    price: number
+
+    @IsOptional()
+    @IsNumber()
+    stock: number
+
     @IsOptional()
     @IsString()
     imageKey: string
@@ -29,9 +63,9 @@ export class CreateProductDto {
     @IsString()
     currency: string
 
-    @IsNotEmpty()
-    @IsString()
-    categoryId: string
+    @IsOptional()
+    @IsNumber()
+    categoryId: number
 }
 
 export class GetProductsDto {

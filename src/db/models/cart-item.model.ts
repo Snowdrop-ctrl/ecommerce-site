@@ -1,30 +1,42 @@
-// import { Model } from 'objection';
-// import { CartModel } from 'src/db/models/cart.model';
+import { Model } from 'objection';
+import { UserModel } from './user.model';
+import { ProductModel } from './product.model';
 
-// export class CartItemModel extends Model {
-//   static tableName = 'cart_items';
-//   static idColumn = 'id';
+export class CartItemModel extends Model {
+  static tableName = 'cart_items';
+  static idColumn = 'id';
 
-//   id: number;
-//   variantPriceId: number;
-//   quantity: number;
-//   cartId: number;
-//   cart: CartModel;
-//   createdAt: Date;
-//   updatedAt: Date;
+  id: number;
+  quantity: number;
+  userId: number;
+  user: UserModel;
+  productId: number;
+  product: ProductModel
+  createdAt: Date;
+  updatedAt: Date;
 
-//   static relationMappings() {
-//     const { CartModel } = require('src/db/models/cart.model');
+  static relationMappings() {
+    const { userModel } = require('./user.model');
+    const { productModel } = require('./product.model');
 
-//     return {
-//       cart: {
-//         relation: Model.BelongsToOneRelation,
-//         modelClass: CartModel,
-//         join: {
-//           from: `${CartItemModel.tableName}.cart_id`,
-//           to: `${CartModel.tableName}.${CartModel.idColumn}`,
-//         },
-//       },
-//     };
-//   }
-// }
+
+    return {
+        user: {
+            relation: Model.BelongsToOneRelation,
+            modelClass: userModel,
+            join: {
+            from: `${CartItemModel.tableName}.user_id`,
+            to: `users.id`,
+            },
+        },
+        product: {
+            relation: Model.BelongsToOneRelation,
+            modelClass: productModel,
+            join: {
+              from: `${CartItemModel.tableName}.product_id`,
+              to: `products.id`,
+            },
+          },
+        };
+    };
+}

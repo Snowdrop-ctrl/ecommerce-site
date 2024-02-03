@@ -9,5 +9,6 @@ import { ProductCategoryModel } from 'src/db/models/product-category.model';
   imports:[ObjectionModule.forFeature([ProductModel, ProductCategoryModel])],
   controllers: [ProductsController],
   providers: [ProductsService],
+  exports: [ProductsService]
 })
 export class ProductsModule {}
