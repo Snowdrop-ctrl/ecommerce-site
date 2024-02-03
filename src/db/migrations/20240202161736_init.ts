@@ -44,7 +44,7 @@ export async function up(knex: Knex): Promise<void> {
         await trx.schema.createTable('products',table => {
             table.increments('id').primary().notNullable()
             table.string('name').notNullable()
-            table.uuid('sku').unique().nullable();
+            table.string('sku').unique().nullable();
             table.string('description').notNullable()
             table.integer('price').notNullable()
             table.integer('stock').notNullable()
@@ -93,7 +93,6 @@ export async function up(knex: Knex): Promise<void> {
 
         await trx.schema.createTable('order_items',table => {
             table.increments('id').primary().notNullable()
-            table.string('sku').unique().notNullable()
             table.integer('ammount').notNullable()
             table.string('quantity').notNullable()
             table.integer('order_id').notNullable();

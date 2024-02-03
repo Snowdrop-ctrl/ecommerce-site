@@ -7,7 +7,6 @@ export class OrderItemModel extends Model {
   static idColumn = 'id';
 
   id: number;
-  sku: string;
   ammount: string;
   quantity: number;
   orderId: number;

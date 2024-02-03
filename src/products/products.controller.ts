@@ -1,33 +1,44 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { CreateProductDto, GetProductsDto } from './products.dto';
+import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
 
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productsService.create(createProductDto);
+  create(@Body() body: CreateProductDto) {
+    return this.productsService.create(body);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  @ApiBearerAuth('access-token')
+  findAll(@Query() query: GetProductsDto) {
+    return this.productsService.findAll(query);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
+  @ApiBearerAuth('access-token')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+  update(@Param('id') id: string, @Body() updateProductDto: any) {
     return this.productsService.update(+id, updateProductDto);
   }
 
-  @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Delete('/:id')
+  @ApiBearerAuth('access-token')
+  @Roles('owner')
   remove(@Param('id') id: string) {
     return this.productsService.remove(+id);
   }

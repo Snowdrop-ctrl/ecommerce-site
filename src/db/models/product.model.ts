@@ -3,7 +3,7 @@ import { type UserModel } from 'src/db/models/user.model';
 import { ProductCategoryModel } from './product-category.model';
 
 export class ProductModel extends Model {
-  static tableName = 'roles';
+  static tableName = 'products';
   static idColumn = 'id';
 
   id: number;
@@ -20,7 +20,7 @@ export class ProductModel extends Model {
   updatedAt: Date;
 
   static relationMappings() {
-    const { ProductCategoryModel } = require('src/db/models/product-category.model');
+    const { ProductCategoryModel } = require('./product-category.model');
     return {
         category: {
         relation: Model.BelongsToOneRelation,

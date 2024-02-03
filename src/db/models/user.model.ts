@@ -1,5 +1,5 @@
 import { Model } from 'objection';
-import { type RoleModel } from 'src/db/models/role.model';
+import { type RoleModel } from './role.model';
 
 export class UserModel extends Model {
   static tableName = 'users';
@@ -9,8 +9,8 @@ export class UserModel extends Model {
   firstName: string;
   lastName?: string;
   email: string;
-  password?: string;
-  phone?: string;
+  password: string;
+  phoneNumber?: string;
   profilePictureKey?: string;
   address?: string;
   country?: string;
@@ -21,7 +21,7 @@ export class UserModel extends Model {
   updatedAt: Date;
 
   static relationMappings() {
-    const { RoleModel } = require('src/db/models/role.model');
+    const { RoleModel } = require('./role.model');
 
     return {
       role: {
@@ -31,7 +31,6 @@ export class UserModel extends Model {
           from: `${UserModel.tableName}.role_id`,
           to: `${RoleModel.tableName}.${RoleModel.idColumn}`,
         },
-        filter: (query) => query.select('id', 'slug', 'name'),
       },
     };
   }

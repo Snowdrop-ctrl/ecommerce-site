@@ -1,6 +1,5 @@
 import { Model } from 'objection';
-import { type UserModel } from 'src/db/models/user.model';
-import { Product } from 'src/products/entities/product.entity';
+import { ProductModel } from './product.model';
 
 export class ProductCategoryModel extends Model {
   static tableName = 'product_categories';
@@ -10,7 +9,7 @@ export class ProductCategoryModel extends Model {
   name: string;
   imageKey?: string;
   slug: string;
-  products: Product[];
+  products: ProductModel[];
   createdAt: Date;
   updatedAt: Date;
 
