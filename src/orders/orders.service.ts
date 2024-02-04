@@ -1,26 +1,75 @@
-import { Injectable } from '@nestjs/common';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { OrderHistoryDto, OrderPlaceDto } from './orders.dto';
+import { OrderModel, OrderStatus } from 'src/db/models/order.model';
+import { OrderItemModel } from 'src/db/models/order-item.model';
+import {v4 as uuid} from 'uuid'
+import { SUCCESS_MESSAGES } from 'src/constants/success.messages';
+import { CartItemModel } from 'src/db/models/cart-item.model';
+import { ERROR_MESSAGES } from 'src/constants/error.messages';
 
 @Injectable()
 export class OrdersService {
-  create(createOrderDto: CreateOrderDto) {
-    return 'This action adds a new order';
+
+  constructor(
+    @Inject(OrderModel)
+    private readonly orderModel: typeof OrderModel,
+    @Inject(OrderItemModel)
+    private readonly orderItemModel: typeof OrderItemModel,
+    @Inject(CartItemModel)
+    private readonly cartItemModel: typeof CartItemModel
+  ){}
+
+  async create(userId: number, body: OrderPlaceDto) {
+
+    const {billingInfo, paymentMode, products} = body;
+
+    const findProductMatchWithUserCart = await this.cartItemModel
+    .query()
+    .whereIn('productId', products.map(product => product.productId))
+    .andWhere('userId', userId)
+
+    if(findProductMatchWithUserCart.length  !== products.length) {
+      throw new HttpException(ERROR_MESSAGES.PRODUCT_NOT_MATCHED, 400)
+    }
+
+    const calculateTotalAmount = products.reduce((acc, product) => acc + product.ammount, 0)
+
+    await this.orderModel.transaction(async (trx) => {
+      const orderData = await this.orderModel.query(trx).insert(
+        {
+          ammount:calculateTotalAmount,
+          billingInfo, 
+          paymentMode, 
+          orderNumber: uuid(), 
+          status: OrderStatus.ORDER_PLACED, 
+          orderPlaced: new Date(), 
+          userId
+        }
+      ) 
+
+      const createOrderItemDataToInsert = products.map(product => ({
+        ammount: product.ammount, 
+        orderId: orderData.id, 
+        productId: product.productId,
+        quantity: product.quantity
+      }))
+
+      await this.orderItemModel.query(trx).insertGraph(createOrderItemDataToInsert)
+
+      await this.cartItemModel.query().delete().where('userId', userId)
+    })
+
+    return {message: SUCCESS_MESSAGES.ORDER_PLACED_SUCCESS};
   }
 
-  findAll() {
-    return `This action returns all orders`;
-  }
+  getUserOrderHistory(userId: number, query: OrderHistoryDto) {
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
-  }
+    const queryBuilder =  this.orderModel.query().withGraphJoined('orderItems').where('userId', userId)
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
-  }
+    if(query.status) {
+      queryBuilder.andWhere('status', query.status)
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+    return queryBuilder
   }
 }

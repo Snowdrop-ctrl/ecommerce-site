@@ -2,6 +2,7 @@ import {
   IsEmail,
   IsMobilePhone,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsStrongPassword,
@@ -56,4 +57,8 @@ export class RegisterDto {
   @IsString()
   @IsOptional()
   state?: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  roleId: number;
 }

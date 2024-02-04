@@ -1,34 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Query } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
+import { OrderHistoryDto, OrderPlaceDto } from './orders.dto';
+import { AuthGuard } from '@nestjs/passport';
 
+@ApiTags('Orders')
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
-  @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.ordersService.create(createOrderDto);
+  @UseGuards(JwtAuthGuard)
+  @Post('/place')
+  @ApiBearerAuth('access-token')
+  create(@Req() request, @Body() body: OrderPlaceDto) {
+    return this.ordersService.create(request.user.id , body);
   }
 
-  @Get()
-  findAll() {
-    return this.ordersService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ordersService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.ordersService.update(+id, updateOrderDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ordersService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  @Get('/history')
+  @ApiBearerAuth('access-token')
+  getHistory(@Req() request, @Query() query: OrderHistoryDto) {
+    return this.ordersService.getUserOrderHistory(request.user.id, query);
   }
 }

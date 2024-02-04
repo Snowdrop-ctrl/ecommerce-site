@@ -12,6 +12,10 @@ export class RolesService {
     return this.roleModel.query().select('*').where({ slug: slug }).first();
   }
 
+  async findRoleById(id: number) {
+    return this.roleModel.query().findById(id)
+  }
+
   async getAllRoles() {
     return this.roleModel.query().select('*');
   }

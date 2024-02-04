@@ -28,7 +28,7 @@ export async function up(knex: Knex): Promise<void> {
             table.string('country').nullable();
             table.string('state').nullable();
             table.integer('role_id').notNullable();
-            table.foreign('role_id').references('roles.id');
+            table.foreign('role_id').references('roles.id').onDelete('CASCADE');
             table.timestamps(true, true);
         }).then(() => knex.raw(onUpdateTrigger('users')));
 
@@ -44,14 +44,14 @@ export async function up(knex: Knex): Promise<void> {
         await trx.schema.createTable('products',table => {
             table.increments('id').primary().notNullable()
             table.string('name').notNullable()
-            table.string('sku').unique().nullable();
+            table.string('sku').nullable();
             table.string('description').notNullable()
             table.integer('price').notNullable()
             table.integer('stock').notNullable()
             table.string('currency').notNullable()
             table.string('image_key').notNullable()
             table.integer('category_id').notNullable();
-            table.foreign('category_id').references('product_categories.id');
+            table.foreign('category_id').references('product_categories.id').onDelete('CASCADE');
             table.timestamps(true, true);
         }).then(() => knex.raw(onUpdateTrigger('products')));
 
@@ -60,9 +60,9 @@ export async function up(knex: Knex): Promise<void> {
             table.increments('id').primary().notNullable()
             table.integer('quantity').notNullable()
             table.integer('user_id').notNullable();
-            table.foreign('user_id').references('users.id');
+            table.foreign('user_id').references('users.id').onDelete('CASCADE');
             table.integer('product_id').notNullable();
-            table.foreign('product_id').references('products.id');
+            table.foreign('product_id').references('products.id').onDelete('CASCADE');
             table.timestamps(true, true);
         }).then(() => knex.raw(onUpdateTrigger('cart_items')));
 
@@ -71,9 +71,9 @@ export async function up(knex: Knex): Promise<void> {
             table.string('review').notNullable()
             table.integer('rating').notNullable()
             table.integer('user_id').notNullable();
-            table.foreign('user_id').references('users.id');
+            table.foreign('user_id').references('users.id').onDelete('CASCADE');
             table.integer('product_id').notNullable();
-            table.foreign('product_id').references('products.id');
+            table.foreign('product_id').references('products.id').onDelete('CASCADE');
             table.timestamps(true, true);
         }).then(() => knex.raw(onUpdateTrigger('product_reviews_ratings')));
 
@@ -86,7 +86,7 @@ export async function up(knex: Knex): Promise<void> {
             table.jsonb('billing_info').nullable();
             table.enum('payment_mode', Object.values(PaymentMode)).notNullable();
             table.integer('user_id').notNullable();
-            table.foreign('user_id').references('users.id');
+            table.foreign('user_id').references('users.id').onDelete('CASCADE');
             table.timestamp('delivery_date').nullable()
             table.timestamps(true, true);
         }).then(() => knex.raw(onUpdateTrigger('orders')));
@@ -96,9 +96,9 @@ export async function up(knex: Knex): Promise<void> {
             table.integer('ammount').notNullable()
             table.string('quantity').notNullable()
             table.integer('order_id').notNullable();
-            table.foreign('order_id').references('orders.id');
+            table.foreign('order_id').references('orders.id').onDelete('CASCADE');
             table.integer('product_id').notNullable();
-            table.foreign('product_id').references('products.id');
+            table.foreign('product_id').references('products.id').onDelete('CASCADE');
             table.timestamps(true, true);
         }).then(() => knex.raw(onUpdateTrigger('order_items')));
         

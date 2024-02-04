@@ -18,7 +18,19 @@ export class CartService {
 
   async create(body: CreateCartDto, userId: number) {
 
-    console.log(body, userId);
+    if(!body.quantity) {
+      throw new HttpException(ERROR_MESSAGES.QUANTITY_NOT_VALID, 400)
+    }
+
+    const findProductAlreadyInCart = await this.cartItemModel
+    .query()
+    .where('userId', userId)
+    .andWhere('productId', body.productId)
+    .first()
+
+    if(findProductAlreadyInCart) {
+      throw new HttpException(ERROR_MESSAGES.PRODUCT_ALREADY_EXIST_IN_CART, 409)
+    }
 
     const findProduct = await this.producSerice.findProduct(body.productId)
     if(!findProduct) {

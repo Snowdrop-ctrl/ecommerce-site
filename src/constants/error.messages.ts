@@ -14,4 +14,9 @@ export const ERROR_MESSAGES = {
   CATEGORY_NOT_EXIST: 'Category not found',
   PRODUCT_NOT_FOUND: 'Product not found',
   CART_ITEM_NOT_FOUND: 'Cart item not found',
+  REVIEW_NOT_FOUND: 'Review not found',
+  ROLE_NOT_FOUND: 'Role not found',
+  QUANTITY_NOT_VALID: 'Quantity should be greater than zero',
+  PRODUCT_ALREADY_EXIST_IN_CART: 'Product already in cart',
+  PRODUCT_NOT_MATCHED: 'Product not matched with you cart',
 };

@@ -3,11 +3,11 @@ import { ProductModel } from './product.model';
 import { OrderModel } from './order.model';
 
 export class OrderItemModel extends Model {
-  static tableName = 'roles';
+  static tableName = 'order_items';
   static idColumn = 'id';
 
   id: number;
-  ammount: string;
+  ammount: number;
   quantity: number;
   orderId: number;
   order: OrderModel
@@ -17,15 +17,15 @@ export class OrderItemModel extends Model {
   updatedAt: Date;
 
   static relationMappings() {
-    const { OrderModel } = require('src/db/models/order.model');
-    const { ProductModel } = require('src/db/models/product.model');
+    const { OrderModel } = require('./order.model');
+    const { ProductModel } = require('./product.model');
 
     return {
     order: {
         relation: Model.BelongsToOneRelation,
         modelClass: OrderModel,
         join: {
-          from: `${OrderItemModel.tableName}.orderId`,
+          from: `${OrderItemModel.tableName}.order_id`,
           to: `${OrderModel.tableName}.${OrderModel.idColumn}`,
         },
       },
@@ -33,7 +33,7 @@ export class OrderItemModel extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: ProductModel,
         join: {
-          from: `${OrderItemModel.tableName}.productId`,
+          from: `${OrderItemModel.tableName}.product_id`,
           to: `${ProductModel.tableName}.${ProductModel.idColumn}`,
         },
       },

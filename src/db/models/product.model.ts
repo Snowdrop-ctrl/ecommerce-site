@@ -2,6 +2,7 @@ import { Model } from 'objection';
 import { type UserModel } from 'src/db/models/user.model';
 import { ProductCategoryModel } from './product-category.model';
 import { CartItemModel } from './cart-item.model';
+import { ProductReviewRatingModel } from './product-review-rating';
 
 export class ProductModel extends Model {
   static tableName = 'products';
@@ -18,12 +19,14 @@ export class ProductModel extends Model {
   categoryId: number;
   category: ProductCategoryModel
   cartItems: CartItemModel[];
+  productReviewRatings: ProductReviewRatingModel[];
   createdAt: Date;
   updatedAt: Date;
 
   static relationMappings() {
     const { ProductCategoryModel } = require('./product-category.model');
     const { CartItemModel } = require('./cart-item.model');
+    const { ProductReviewRatingModel } = require('./product-review-rating');
 
     return {
       category: {
@@ -40,6 +43,14 @@ export class ProductModel extends Model {
         join: {
           from: `${ProductModel.tableName}.id`,
           to: `${CartItemModel.tableName}.product_id`,
+        },
+      },
+      productReviewRatings: {
+        relation: Model.HasManyRelation,
+        modelClass: ProductReviewRatingModel,
+        join: {
+          from: `${ProductModel.tableName}.id`,
+          to: `${ProductReviewRatingModel.tableName}.product_id`,
         },
       },
     };

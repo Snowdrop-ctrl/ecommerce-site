@@ -35,6 +35,7 @@ export class ProductsService {
     const productQueryBuilder = this.productModel
     .query()
     .withGraphJoined('category')
+    .withGraphJoined('productReviewRatings')
     .limit(limit)
     .offset((page - 1) * limit);
 
@@ -50,11 +51,22 @@ export class ProductsService {
       productQueryBuilder.whereBetween('price',[priceStart, priceEnd]);
     }
 
-    return await productQueryBuilder;
+    const totalProduct = (await this.productModel
+      .query()
+      .clone()
+      .count('id')
+      .first()) as unknown as {count: string}
+
+    return {
+      items: await productQueryBuilder,
+      total: parseInt(totalProduct.count || '0'),
+    };
   }
 
   async findProduct(id: number) {
-    const singleProduct = await this.productModel.query().findById(id)
+    const singleProduct = await this.productModel.query()
+    .withGraphJoined('category')
+    .withGraphJoined('productReviewRatings').findById(id)
 
     if(!singleProduct){
       throw new HttpException(ERROR_MESSAGES.PRODUCT_NOT_FOUND,404)

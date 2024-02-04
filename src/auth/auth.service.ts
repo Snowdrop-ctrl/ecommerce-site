@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
-import omit from 'lodash/omit'
 import {
   LoginDto,
   RegisterDto,
@@ -42,7 +41,9 @@ export class AuthService {
     const user = await this.usersService.findUserByEmail(email);
 
     if (user && user.password && bcrypt.compareSync(password, user.password)) {
-      return omit(user, ['password']);
+      delete user.password;
+
+      return user;
     }
 
     return null;
@@ -73,7 +74,8 @@ export class AuthService {
       phoneNumber,
       address,
       country,
-      state
+      state,
+      roleId
     } = payload;
 
     const getUserByEmailId = await this.usersService.findUserByEmail(email);
@@ -85,7 +87,11 @@ export class AuthService {
     const user = await this.userModel.transaction(async (trx) => {
       let role = null;
 
-      role = await this.rolesService.findRoleBySlug('user');
+      role = await this.rolesService.findRoleById(roleId);
+
+      if(!role) {
+        throw new HttpException(ERROR_MESSAGES.ROLE_NOT_FOUND, 404);
+      }
 
       const user = await this.usersService.create(
         {
