@@ -71,6 +71,11 @@ export class UpdateProductDto {
 }
 
 export class GetProductsDto {
+
+    @IsString()
+    @IsOptional()
+    search?: string
+
     @Transform(({ value }) => toNumber(value, { default: 0, min: 0 }))
     @IsNumber()
     @IsOptional()

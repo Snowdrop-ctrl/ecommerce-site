@@ -30,7 +30,7 @@ export class ProductsService {
 
   async findAll(query: GetProductsDto) {
 
-    const {page=1, limit=10, categoryId, priceStart, priceEnd} = query;
+    const {page=1, limit=10, categoryId, priceStart, priceEnd, search} = query;
 
     const productQueryBuilder = this.productModel
     .query()
@@ -45,6 +45,10 @@ export class ProductsService {
         throw new HttpException(ERROR_MESSAGES.CATEGORY_NOT_EXIST,404)
       }
       productQueryBuilder.where('categoryId', +categoryId)
+    }
+
+    if(search) {
+      productQueryBuilder.andWhere('products.name','ILIKE', `%${search}%`)
     }
 
     if(priceStart && priceEnd) {

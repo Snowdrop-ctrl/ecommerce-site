@@ -1,5 +1,5 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
-import { OrderHistoryDto, OrderPlaceDto } from './orders.dto';
+import { OrderHistoryDto, OrderPlaceDto, OrderStatuUpdateDto, OrdersListDto } from './orders.dto';
 import { OrderModel, OrderStatus } from 'src/db/models/order.model';
 import { OrderItemModel } from 'src/db/models/order-item.model';
 import {v4 as uuid} from 'uuid'
@@ -60,6 +60,29 @@ export class OrdersService {
     })
 
     return {message: SUCCESS_MESSAGES.ORDER_PLACED_SUCCESS};
+  }
+
+  async getAll(query: OrdersListDto) {
+
+    const {limit=10, page=1} = query;
+
+    const orderListQueryBuilder = this.orderModel.query().limit(limit).offset((page -1)*limit)
+
+    const totalOrdes = (await orderListQueryBuilder.clone().count('id').first()) as unknown as {count: string} 
+
+    return {items: await orderListQueryBuilder, total: +totalOrdes?.count || 0}
+  }
+
+  async changeStatus(orderId: number, body: OrderStatuUpdateDto) {
+    const findOrder = await this.orderModel.query().where('id', orderId)
+
+    if(!findOrder) {
+      throw new HttpException(ERROR_MESSAGES.ORDER_NOT_FOUND, 404)
+    }
+
+    await this.orderModel.query().update({status: body.status}).where('id', orderId)
+
+    return {message: SUCCESS_MESSAGES.ORDER_STATUS_CHANGE_SUCCESS}
   }
 
   getUserOrderHistory(userId: number, query: OrderHistoryDto) {

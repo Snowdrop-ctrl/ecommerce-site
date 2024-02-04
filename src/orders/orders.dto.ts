@@ -1,5 +1,6 @@
 import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsObject, IsOptional, ValidateIf, ValidateNested } from "class-validator"
 import { OrderStatus, PaymentMode } from "src/db/models/order.model"
+import { PaginationAndSearchDto } from "src/utils/common.dto"
 
 class CartItems {
     @IsNumber()
@@ -39,5 +40,15 @@ export class OrderHistoryDto {
         message: `Status mode must be one of ${Object.values(OrderStatus).join(', ')}`,
     })
     @IsOptional()
+    status?: OrderStatus
+}
+
+export class OrdersListDto extends PaginationAndSearchDto {}
+
+export class OrderStatuUpdateDto {
+    @IsEnum(OrderStatus, {
+        message: `Status mode must be one of ${Object.values(OrderStatus).join(', ')}`,
+    })
+    @IsNotEmpty()
     status?: OrderStatus
 }

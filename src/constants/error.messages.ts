@@ -19,4 +19,5 @@ export const ERROR_MESSAGES = {
   QUANTITY_NOT_VALID: 'Quantity should be greater than zero',
   PRODUCT_ALREADY_EXIST_IN_CART: 'Product already in cart',
   PRODUCT_NOT_MATCHED: 'Product not matched with you cart',
+  ORDER_NOT_FOUND: 'Order not found',
 };

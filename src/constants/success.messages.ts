@@ -6,5 +6,6 @@ export const SUCCESS_MESSAGES = {
   ITEM_REMOVED_FROM_CART: 'Item removed successfully from cart',
   ORDER_PLACED_SUCCESS: 'Order placed successfully',
   REVIEW_ADDED_SUCCESS: 'Review added successfully',
-  REVIEW_REMOVED_SUCCESS: 'Review removed successfully'
+  REVIEW_REMOVED_SUCCESS: 'Review removed successfully',
+  ORDER_STATUS_CHANGE_SUCCESS: 'Order status changed successfully'
 };
