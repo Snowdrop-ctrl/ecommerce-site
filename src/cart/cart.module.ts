@@ -6,7 +6,7 @@ import { CartItemModel } from 'src/db/models/cart-item.model';
 import { ProductsModule } from 'src/products/products.module';
 
 @Module({
-  imports:[ObjectionModule.forFeature([CartItemModel]), ProductsModule],
+  imports: [ObjectionModule.forFeature([CartItemModel]), ProductsModule],
   controllers: [CartController],
   providers: [CartService],
 })

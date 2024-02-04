@@ -6,10 +6,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
-import {
-  LoginDto,
-  RegisterDto,
-} from 'src/auth/auth.dto';
+import { LoginDto, RegisterDto } from 'src/auth/auth.dto';
 import { ERROR_MESSAGES } from 'src/constants/error.messages';
 import { SUCCESS_MESSAGES } from 'src/constants/success.messages';
 import { UserModel } from 'src/db/models/user.model';
@@ -36,7 +33,6 @@ export class AuthService {
     });
   }
 
-
   async validateUser(email: string, password: string) {
     const user = await this.usersService.findUserByEmail(email);
 
@@ -52,7 +48,6 @@ export class AuthService {
   async login(payload: LoginDto) {
     const { password, email } = payload;
     const user = await this.validateUser(email, password);
-
 
     if (user) {
       const payload = { email: user.email, id: user.id };
@@ -75,7 +70,7 @@ export class AuthService {
       address,
       country,
       state,
-      roleId
+      roleId,
     } = payload;
 
     const getUserByEmailId = await this.usersService.findUserByEmail(email);
@@ -89,15 +84,14 @@ export class AuthService {
 
       role = await this.rolesService.findRoleById(roleId);
 
-      if(!role) {
+      if (!role) {
         throw new HttpException(ERROR_MESSAGES.ROLE_NOT_FOUND, 404);
       }
 
       const user = await this.usersService.create(
         {
           email,
-          password:
-            password ? bcrypt.hashSync(password, 10) : null,
+          password: password ? bcrypt.hashSync(password, 10) : null,
           firstName,
           lastName,
           phoneNumber,
@@ -117,9 +111,9 @@ export class AuthService {
     }
 
     return {
-        user,
-        accessToken: this.generateToken({ email: user.email, id: user.id }),
-        message: SUCCESS_MESSAGES.REGISTRATION_COMPLETED,
+      user,
+      accessToken: this.generateToken({ email: user.email, id: user.id }),
+      message: SUCCESS_MESSAGES.REGISTRATION_COMPLETED,
     };
   }
 

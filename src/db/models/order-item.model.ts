@@ -10,9 +10,9 @@ export class OrderItemModel extends Model {
   ammount: number;
   quantity: number;
   orderId: number;
-  order: OrderModel
+  order: OrderModel;
   productId: number;
-  product: ProductModel
+  product: ProductModel;
   createdAt: Date;
   updatedAt: Date;
 
@@ -21,7 +21,7 @@ export class OrderItemModel extends Model {
     const { ProductModel } = require('./product.model');
 
     return {
-    order: {
+      order: {
         relation: Model.BelongsToOneRelation,
         modelClass: OrderModel,
         join: {

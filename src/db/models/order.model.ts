@@ -3,14 +3,14 @@ import { UserModel } from './user.model';
 import { OrderItemModel } from './order-item.model';
 
 export enum OrderStatus {
-    ORDER_PLACED = 'order_placed',
-    SHIPPED = 'shipped',
-    DELIVERED = 'delivered',
-  }
+  ORDER_PLACED = 'order_placed',
+  SHIPPED = 'shipped',
+  DELIVERED = 'delivered',
+}
 
 export enum PaymentMode {
-    COD = 'cod',
-    ONLINE = 'online',
+  COD = 'cod',
+  ONLINE = 'online',
 }
 
 export class OrderModel extends Model {
@@ -27,7 +27,7 @@ export class OrderModel extends Model {
   paymentMode?: PaymentMode;
   userId: number;
   user: UserModel;
-  orderItems: OrderItemModel[]
+  orderItems: OrderItemModel[];
   createdAt: Date;
   updatedAt: Date;
 

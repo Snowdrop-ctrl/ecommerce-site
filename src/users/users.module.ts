@@ -10,7 +10,8 @@ import { RolesService } from 'src/roles/roles.service';
 import { RolesModule } from 'src/roles/roles.module';
 
 @Module({
-  imports: [ObjectionModule.forFeature([UserModel, RoleModel]),
+  imports: [
+    ObjectionModule.forFeature([UserModel, RoleModel]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService) => ({
@@ -18,10 +19,10 @@ import { RolesModule } from 'src/roles/roles.module';
       }),
       inject: [ConfigService],
     }),
-    RolesModule
+    RolesModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService,RolesService],
+  providers: [UsersService, RolesService],
   exports: [UsersService],
 })
 export class UsersModule {}

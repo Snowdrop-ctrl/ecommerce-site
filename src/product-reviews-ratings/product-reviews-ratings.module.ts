@@ -6,7 +6,10 @@ import { ProductReviewRatingModel } from 'src/db/models/product-review-rating';
 import { ProductsModule } from 'src/products/products.module';
 
 @Module({
-  imports: [ObjectionModule.forFeature([ProductReviewRatingModel]), ProductsModule],
+  imports: [
+    ObjectionModule.forFeature([ProductReviewRatingModel]),
+    ProductsModule,
+  ],
   controllers: [ProductReviewsRatingsController],
   providers: [ProductReviewsRatingsService],
 })

@@ -6,9 +6,9 @@ import { ProductModel } from 'src/db/models/product.model';
 import { ProductCategoryModel } from 'src/db/models/product-category.model';
 
 @Module({
-  imports:[ObjectionModule.forFeature([ProductModel, ProductCategoryModel])],
+  imports: [ObjectionModule.forFeature([ProductModel, ProductCategoryModel])],
   controllers: [ProductsController],
   providers: [ProductsService],
-  exports: [ProductsService]
+  exports: [ProductsService],
 })
 export class ProductsModule {}

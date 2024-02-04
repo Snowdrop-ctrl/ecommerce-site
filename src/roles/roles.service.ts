@@ -13,7 +13,7 @@ export class RolesService {
   }
 
   async findRoleById(id: number) {
-    return this.roleModel.query().findById(id)
+    return this.roleModel.query().findById(id);
   }
 
   async getAllRoles() {

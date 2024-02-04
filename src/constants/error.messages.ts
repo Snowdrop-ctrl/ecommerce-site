@@ -1,7 +1,6 @@
 export const ERROR_MESSAGES = {
   INVALID_CREDENTIALS: 'Invalid credentials',
-  ACCOUNT_ALREADY_EXISTS:
-    'Account already exists with this email',
+  ACCOUNT_ALREADY_EXISTS: 'Account already exists with this email',
   GOOGLE_ACCOUNT_DOES_NOT_EXIST: 'Google account does not exist',
   SOME_ERRORS_OCCURRED: 'Some errors occurred',
   USER_NOT_CREATED: 'User is not created',

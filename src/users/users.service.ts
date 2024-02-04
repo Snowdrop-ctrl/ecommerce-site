@@ -4,14 +4,12 @@ import { Transaction } from 'objection';
 
 @Injectable()
 export class UsersService {
-
   constructor(
-      @Inject(UserModel)
-      private userModel: typeof UserModel
-    ){}
+    @Inject(UserModel)
+    private userModel: typeof UserModel,
+  ) {}
 
   async findUserByEmail(email: string) {
-
     const user = await this.userModel
       .query()
       .select('users.*')

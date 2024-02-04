@@ -18,14 +18,13 @@ export class UserModel extends Model {
   state?: string;
   roleId: number;
   role: RoleModel;
-  cartItems: CartItemModel[]
+  cartItems: CartItemModel[];
   createdAt: Date;
   updatedAt: Date;
 
   static relationMappings() {
     const { RoleModel } = require('./role.model');
     const { CartItemModel } = require('./cart-item.model');
-
 
     return {
       role: {

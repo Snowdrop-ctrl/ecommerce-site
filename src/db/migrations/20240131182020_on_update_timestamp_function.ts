@@ -13,4 +13,3 @@ exports.up = (knex) => knex.raw(ON_UPDATE_TIMESTAMP_FUNCTION);
 exports.down = (knex) => knex.raw(DROP_ON_UPDATE_TIMESTAMP_FUNCTION);
 
 export {};
-

@@ -7,36 +7,34 @@ import { SUCCESS_MESSAGES } from 'src/constants/success.messages';
 
 @Injectable()
 export class ProductReviewsRatingsService {
-
   constructor(
     @Inject(ProductReviewRatingModel)
     private readonly productReviewRatingModel: typeof ProductReviewRatingModel,
 
-    private readonly ProductService: ProductsService
-  ){}
+    private readonly ProductService: ProductsService,
+  ) {}
 
   async create(userId: number, body: CreateProductReviewsRatingDto) {
+    const findProduct = await this.ProductService.findProduct(+body.productId);
 
-    const findProduct = await this.ProductService.findProduct(+body.productId)
-
-    if(!findProduct) {
-      throw new HttpException(ERROR_MESSAGES.PRODUCT_NOT_FOUND, 404)
+    if (!findProduct) {
+      throw new HttpException(ERROR_MESSAGES.PRODUCT_NOT_FOUND, 404);
     }
 
-    await this.productReviewRatingModel.query().insert({...body, userId})
-    
-    return {message: SUCCESS_MESSAGES.REVIEW_ADDED_SUCCESS};
+    await this.productReviewRatingModel.query().insert({ ...body, userId });
+
+    return { message: SUCCESS_MESSAGES.REVIEW_ADDED_SUCCESS };
   }
 
   async remove(id: number) {
-   const findReview = await this.productReviewRatingModel.query().findById(id)
-  
-   if(!findReview) {
-    throw new HttpException(ERROR_MESSAGES.REVIEW_NOT_FOUND, 404)
-   }
+    const findReview = await this.productReviewRatingModel.query().findById(id);
 
-   await this.productReviewRatingModel.query().deleteById(id)
+    if (!findReview) {
+      throw new HttpException(ERROR_MESSAGES.REVIEW_NOT_FOUND, 404);
+    }
 
-   return {message: SUCCESS_MESSAGES.REVIEW_REMOVED_SUCCESS}
+    await this.productReviewRatingModel.query().deleteById(id);
+
+    return { message: SUCCESS_MESSAGES.REVIEW_REMOVED_SUCCESS };
   }
 }

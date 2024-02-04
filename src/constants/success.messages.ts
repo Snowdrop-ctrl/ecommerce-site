@@ -7,5 +7,5 @@ export const SUCCESS_MESSAGES = {
   ORDER_PLACED_SUCCESS: 'Order placed successfully',
   REVIEW_ADDED_SUCCESS: 'Review added successfully',
   REVIEW_REMOVED_SUCCESS: 'Review removed successfully',
-  ORDER_STATUS_CHANGE_SUCCESS: 'Order status changed successfully'
+  ORDER_STATUS_CHANGE_SUCCESS: 'Order status changed successfully',
 };

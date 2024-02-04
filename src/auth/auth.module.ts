@@ -12,9 +12,7 @@ import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
-    ObjectionModule.forFeature([
-      UserModel,
-    ]),
+    ObjectionModule.forFeature([UserModel]),
     UsersModule,
     RolesModule,
     JwtModule.registerAsync({

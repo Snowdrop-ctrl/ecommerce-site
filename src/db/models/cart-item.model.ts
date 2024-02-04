@@ -11,7 +11,7 @@ export class CartItemModel extends Model {
   userId: number;
   user: UserModel;
   productId: number;
-  product: ProductModel
+  product: ProductModel;
   createdAt: Date;
   updatedAt: Date;
 
@@ -19,24 +19,23 @@ export class CartItemModel extends Model {
     const { userModel } = require('./user.model');
     const { productModel } = require('./product.model');
 
-
     return {
-        user: {
-            relation: Model.BelongsToOneRelation,
-            modelClass: userModel,
-            join: {
-            from: `${CartItemModel.tableName}.user_id`,
-            to: `users.id`,
-            },
+      user: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: userModel,
+        join: {
+          from: `${CartItemModel.tableName}.user_id`,
+          to: `users.id`,
         },
-        product: {
-            relation: Model.BelongsToOneRelation,
-            modelClass: productModel,
-            join: {
-              from: `${CartItemModel.tableName}.product_id`,
-              to: `products.id`,
-            },
-          },
-        };
+      },
+      product: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: productModel,
+        join: {
+          from: `${CartItemModel.tableName}.product_id`,
+          to: `products.id`,
+        },
+      },
     };
+  }
 }

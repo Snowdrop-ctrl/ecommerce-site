@@ -16,10 +16,8 @@ const usersToAdd: Partial<UserModel>[] = [
     email: 'test+user2@gmail.tech',
     roleId: 2,
     password: bcryptjs.hashSync('Testuser123#', 10),
-  }
+  },
 ];
-
-
 
 exports.seed = async function seed(knex) {
   const users = await knex('users').select('*');

@@ -17,7 +17,7 @@ export class ProductModel extends Model {
   currency: string;
   imageKey: string;
   categoryId: number;
-  category: ProductCategoryModel
+  category: ProductCategoryModel;
   cartItems: CartItemModel[];
   productReviewRatings: ProductReviewRatingModel[];
   createdAt: Date;

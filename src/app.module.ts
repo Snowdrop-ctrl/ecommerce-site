@@ -17,9 +17,19 @@ import { ValidationExceptionFilter } from './filters/validator-exception.filter'
 import { ProductReviewsRatingsModule } from './product-reviews-ratings/product-reviews-ratings.module';
 
 @Module({
-  imports: [DatabaseModule, ProductsModule, UsersModule, OrdersModule, RolesModule, AuthModule, CartModule, ProductReviewsRatingsModule],
+  imports: [
+    DatabaseModule,
+    ProductsModule,
+    UsersModule,
+    OrdersModule,
+    RolesModule,
+    AuthModule,
+    CartModule,
+    ProductReviewsRatingsModule,
+  ],
   controllers: [AppController],
-  providers: [AppService,
+  providers: [
+    AppService,
     {
       provide: APP_FILTER,
       useClass: AllExceptionFilter,
@@ -44,7 +54,7 @@ import { ProductReviewsRatingsModule } from './product-reviews-ratings/product-r
           },
         }),
     },
-    { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor }
+    { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },
   ],
 })
 export class AppModule {}
