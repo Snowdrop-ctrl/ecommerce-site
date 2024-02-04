@@ -24,12 +24,38 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Ecommerce site apis
+
+## Dependencies
+
+```bash
+$ node >= 18
+$ Install knex globaly in system ( use for run migrations / seeds)
+```
+
+## Add env variables
+
+```bash
+$ you can see env sample file for environment variables required for this project
+```
 
 ## Installation
 
 ```bash
 $ yarn install
+```
+
+## Runnnig migrations
+
+```bash
+$ yarn knex:dev migrate:latest ( Add tables in database)
+$ yarn knex:dev migrate:down ( Remove tables from database)
+```
+
+## Runnnig seeds
+
+```bash
+$ yarn knex:dev seed:run ( Add data in database)
 ```
 
 ## Running the app
@@ -40,9 +66,6 @@ $ yarn run start
 
 # watch mode
 $ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
 ```
 
 ## Test
@@ -57,17 +80,3 @@ $ yarn run test:e2e
 # test coverage
 $ yarn run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
