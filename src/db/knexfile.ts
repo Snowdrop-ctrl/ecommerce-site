@@ -1,8 +1,8 @@
 import { knexSnakeCaseMappers } from 'objection';
-import dotEnv from 'dotenv';
+import * as dotEnv from 'dotenv';
 
 dotEnv.config({
-  path: '../.env',
+  path: '../../.env',
 });
 
 module.exports = {
