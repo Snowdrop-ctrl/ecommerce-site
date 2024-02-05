@@ -68,6 +68,12 @@ $ yarn run start
 $ yarn run start:dev
 ```
 
+## Api Documentation
+
+```bash
+$ hostUrl/api-docs ( eg. http://localhost:3000/api-docs )
+```
+
 ## Test
 
 ```bash
